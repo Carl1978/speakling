@@ -1,44 +1,43 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import NavBar from "./layout/NavBar";
-import User from "./User";
+import DashBoard from "./dashboard/DashBoard";
+import SignUp from "./auth/SignUp";
+import SignIn from "./auth/SignIn";
+import Phrases from "./skill/phrases";
 
 class App extends Component {
-    state = {
-        loggedIn: false
-    };
+  state = {
+    phrases: [
+      { id: 1, question: "The car is red", answer: "Az auto piros" },
+      {
+        id: 2,
+        question: "here is five apples",
+        answer: "itt van öt alma"
+      },
+      { id: 3, question: "What is the time", answer: "mennyi ay idő" },
+      { id: 4, question: "What is your name", answer: "mi a neved" }
+    ]
+  };
 
-    // handleLogIn = () => {
-    //     this.setState({ loggedIn: false });
-    // };
-
-    render() {
-        //console.log(this.state);
-        return (
-            <Router>
-                <div className="app">
-                    {/* <NavBar handleLogIn={this.handleLogIn.bind(this)} /> */}
-                    <Route
-                        exact
-                        path="/"
-                        render={() => {
-                            return <h1>Home</h1>;
-                        }}
-                    />
-                    <Route
-                        exact
-                        path="/help"
-                        render={() => {
-                            return <h1>Help</h1>;
-                        }}
-                    />
-
-                    <Route path="/user/:username" component={User} />
-                </div>
-            </Router>
-        );
-    }
+  render() {
+    console.log(this.state);
+    return (
+      <BrowserRouter>
+        <div className="app">
+          <NavBar />
+          <br />
+          <Switch>
+            <Route exact path="/" component={DashBoard} />
+            <Route path="/signup" component={SignUp} />
+            <Route path="/signout" component={SignIn} />
+            <Route path="/skill/fr/phrases/:level" component={Phrases} />
+          </Switch>
+          <div>{this.state.divName}</div>
+        </div>
+      </BrowserRouter>
+    );
+  }
 }
 
 export default App;

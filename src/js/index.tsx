@@ -11,4 +11,4 @@ import "../scss/main.scss";
 let mountNode = document.getElementById("app");
 ReactDOM.render(<App />, mountNode);
 
-console.log(add(1, 2));
+// console.log(add(1, 2));

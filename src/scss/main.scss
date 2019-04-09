@@ -1,37 +1,176 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
+@import url("https://fonts.googleapis.com/css?family=Fredoka+One|Luckiest+Guy|Passion+One|Permanent+Marker");
+
+// font-family: 'Permanent Marker', cursive;
+// font-family: 'Fredoka One', cursive;
+// font-family: 'Passion One', cursive;
+// font-family: 'Luckiest Guy', cursive;
+
+:root {
+  --greenYellow: greenyellow;
+  --greenYellowDark: rgb(115, 187, 7);
+  --greenYellowDark2: rgb(102, 163, 9);
+  --blueLight: rgb(106, 150, 233);
+  --greyDark: #222;
+  --lightGrey: #ddd;
+  --HeadingFont: "Fredoka One", cursive;
+}
 
 * {
-    padding: 0;
-    margin: 0;
-    font-family: Roboto, Arial, Helvetica, sans-serif;
+  padding: 0;
+  margin: 0;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
 }
 
-div.nav-bar {
-    background-color: royalblue;
-    text-align: center;
+nav.nav-bar {
+  width: 100%;
+  padding: 10px 2px;
+
+  background-color: var(--greenYellow);
+  border-bottom: 2px solid var(--lightGrey);
+  border-radius: 10px;
 }
 
-div.nav-bar ul {
-    padding: 0;
-    margin: 0;
+nav.nav-bar ul {
+  padding: 0;
+  margin: 0;
+
+  text-align: left;
 }
 
-div.nav-bar ul li {
-    display: inline-block;
+nav.nav-bar ul li {
+  display: inline-block;
 }
 
-div.nav-bar ul li a {
-    padding: 15px;
-    display: inline-block;
-    color: white;
-    text-decoration: none;
+nav ul li a {
+  display: inline-block;
+  color: black;
+  text-decoration: none;
 }
 
-div.nav-bar ul li a:hover {
-    padding: 15px;
-    display: inline-block;
-    background-color: rgb(106, 150, 233);
+nav.nav-bar ul li a {
+  font-family: var(--HeadingFont);
+  padding: 8px;
 }
 
-div.nav-bar ul li a {
+nav ul li a:hover {
+  text-decoration: underline;
+  transform: scale(1.1);
+}
+
+.nav-bar-title {
+  padding: 5px;
+
+  font-size: 2em;
+  font-weight: bold;
+  background-color: var(--greenYellow);
+}
+
+nav ul li a#title:hover {
+  transform: scale(1);
+}
+
+.nav-bar-title span:nth-child(1) {
+  font-family: var(--HeadingFont);
+  font-size: 0.9em;
+  font-weight: normal;
+  color: white;
+  background-color: #222;
+  border-radius: 50%;
+  padding: 7px;
+}
+
+.nav-bar-title span:nth-child(2) {
+  font-family: var(--HeadingFont);
+  color: #222;
+  text-decoration: underline;
+  background-color: white;
+  border-radius: 50%;
+  padding: 7px;
+}
+
+.nav-bar-title #title {
+  padding: 0px;
+
+  background-color: var(--greenYellow);
+}
+
+h6 {
+  margin: 0px 10px 0 0;
+  float: right;
+}
+
+h1 {
+  margin: 10px;
+
+  user-select: none;
+  font-family: var(--HeadingFont);
+  color: var(--greyDark);
+  clear: right;
+}
+
+.phrase-holder {
+  width: 90vw;
+  margin: 10px auto;
+  height: auto;
+  padding: 5px;
+
+  border-radius: 5px;
+  background-color: #eee;
+}
+
+.question {
+  padding: 10px 0;
+  margin: 10px;
+
+  color: var(--greyDark);
+  font-size: 1.1em;
+}
+
+.btn {
+  padding: 15px 18px;
+  margin: 5px;
+  border-bottom: 3px solid var(--lightGrey);
+  border-right: 2px solid var(--lightGrey);
+  border-top: 1px solid var(--lightGrey);
+  border-left: 1px solid var(--lightGrey);
+
+  display: inline-block;
+  border-radius: 20px;
+  background-color: #fff;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  color: var(--greyDark);
+  user-select: none;
+}
+
+.btn:active {
+  transform: scale(1.1);
+}
+
+.btn-action {
+  padding: 15px 30px;
+  background-color: var(--greenYellowDark);
+  color: black;
+  font-family: var(--HeadingFont);
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 4px solid var(--greenYellowDark2);
+  border-right: 2px solid var(--greenYellowDark2);
+  border-top: 1px solid var(--greenYellowDark2);
+  border-left: 1px solid var(--greenYellowDark2);
+}
+
+.sentence {
+  height: 50px;
+  border-bottom: 2px solid var(--lightGrey);
+  margin: 10px;
+
+  // background-color: white;
+}
+
+.line {
+  width: 90vw;
+  margin: 10px auto;
+  border-bottom: 2px solid var(--lightGrey);
 }

@@ -1,49 +1,9 @@
-import React, { Component } from "react";
-import { NavLink, Redirect, withRouter } from "react-router-dom";
+import React from "react";
 
-class NavBar extends Component {
-    // state = {
-    //     name: "Carl"
-    // };
+import SignedOutLinks from "./SignedOutLinks";
 
-    render() {
-        //console.log("state : " + this.state.name);
-        // console.log("NavBar : props : ", this.props);
-        // setTimeout(() => {
-        //     this.props.history.push("/help");
-        // }, 2000);
-
-        return (
-            <div className="nav-bar">
-                <ul>
-                    <li>
-                        <NavLink to="/" exact activeStyle={linkStyle}>
-                            Home
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/help" exact activeStyle={linkStyle}>
-                            Help
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/user/john" exact activeStyle={linkStyle}>
-                            User
-                        </NavLink>
-                    </li>
-                </ul>
-                <input
-                    type="button"
-                    value="log in"
-                    onClick={this.props.handleLogIn}
-                />
-            </div>
-        );
-    }
-}
-
-const linkStyle = {
-    color: "yellow"
+const NavBar = () => {
+    return <SignedOutLinks />;
 };
 
-export default withRouter(NavBar);
+export default NavBar;
