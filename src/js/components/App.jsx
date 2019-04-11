@@ -4,22 +4,9 @@ import NavBar from "./layout/NavBar";
 import DashBoard from "./dashboard/DashBoard";
 import SignUp from "./auth/SignUp";
 import SignIn from "./auth/SignIn";
-import Phrases from "./skill/phrases";
+import Phrases from "./skill/Phrases";
 
 class App extends Component {
-  state = {
-    phrases: [
-      { id: 1, question: "The car is red", answer: "Az auto piros" },
-      {
-        id: 2,
-        question: "here is five apples",
-        answer: "itt van öt alma"
-      },
-      { id: 3, question: "What is the time", answer: "mennyi ay idő" },
-      { id: 4, question: "What is your name", answer: "mi a neved" }
-    ]
-  };
-
   render() {
     console.log(this.state);
     return (
@@ -33,7 +20,6 @@ class App extends Component {
             <Route path="/signout" component={SignIn} />
             <Route path="/skill/fr/phrases/:level" component={Phrases} />
           </Switch>
-          <div>{this.state.divName}</div>
         </div>
       </BrowserRouter>
     );
