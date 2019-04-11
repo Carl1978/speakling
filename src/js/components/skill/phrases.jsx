@@ -8,6 +8,7 @@ import Sentence from "./Sentence";
 class Phrases extends Component {
   /* Bonjour, comment vas-tu? */
   state = {
+    voiceOn: true,
     phraseIndex: 0,
     phrases: [
       {
@@ -57,15 +58,199 @@ class Phrases extends Component {
     wordBankAnswer: []
   };
 
+  // ------------------------------------------------------------------
+  // Speech Synthesis
+  // Init SpeechSynth API
+  synth = window.speechSynthesis;
+
+  // Init voices array
+  voices = [];
+
+  rate = 1;
+  pitch = 1;
+
+  getVoices = () => {
+    this.voices = this.synth.getVoices();
+    console.log(this.voices);
+  };
+
+  // Speak
+  speak = () => {
+    // Check if speaking
+    if (this.synth.speaking) {
+      console.log("Already speaking...");
+      return;
+    }
+
+    let textInputValue = "Hello, How are you?";
+    if (textInputValue !== "") {
+      // Get speak text
+      const speakText = new SpeechSynthesisUtterance(textInputValue);
+      // Speak end
+      speakText.onend = e => {
+        console.log("Done speaking...");
+      };
+
+      // Speak error
+      speakText.onerror = e => {
+        console.error("Something went wrong");
+      };
+
+      // // Selected voice
+      console.log("got here!");
+      this.voices.forEach(voice => {
+        console.log("voice : " + voice);
+        //if (voice.lang === "fr-FR") {
+        if (voice.lang === "en-US") {
+          console.log("Got here!");
+          speakText.voice = voice;
+        }
+      });
+
+      // Set pitch and rate
+      speakText.rate = this.rate;
+      speakText.pitch = this.pitch;
+
+      // Speak
+      this.synth.speak(speakText);
+    }
+  };
+
+  // ------------------------------------------------------------------
+  // Speech Recognition
+
+  recognition = null;
+  //voiceOn = true;
+
+  initSpeechRecognition = () => {
+    window.SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    this.recognition = new window.SpeechRecognition();
+    this.recognition.interimResults = true;
+    this.recognition.lang = "fr-Fr"; //"en-US"; //"hu-HU"; //"en-US";
+    let { lang } = this.recognition;
+    console.log("initSpeechRecognition : lang : " + lang);
+    //recognition.start();
+    // recognition.abort();
+    // recognition.stop();
+
+    this.recognition.addEventListener("result", e => {
+      console.log(e.results);
+      const transcript = Array.from(e.results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+        .join("");
+
+      console.log(transcript);
+
+      //p.textContent = transcript;
+      // this.setState({
+      //   spoken: transcript
+      // });
+
+      //if (this.recognition.lang === "fr-FR") {
+      const { phraseIndex, wordBankAnswer } = this.state;
+      const { wordBank } = this.state.phrases[phraseIndex];
+      wordBank.forEach(word => {
+        if (transcript.toLowerCase().includes(word)) {
+          if (!wordBankAnswer.includes(word)) {
+            this.setState({
+              wordBankAnswer: [...wordBankAnswer, word]
+            });
+          }
+        }
+      });
+      //}
+
+      // // check if trancscript includes something!
+      // if (recognition.lang === "hu-HU") {
+      //   let i = 0;
+      //   const newFruit = this.state.fruitLstHU.map(fruitHu => {
+      //     const fruit = this.state.fruitLst[i];
+      //     if (transcript.includes(fruitHu.name)) {
+      //       fruit.display = "hide";
+      //     }
+      //     i++;
+      //     return fruit;
+      //   });
+      //   this.setState({
+      //     fruitLst: newFruit
+      //   });
+
+      //   // special cases!
+      //   if (transcript.includes("megint")) {
+      //     const initFruit = this.state.fruitLst.map(fruit => {
+      //       fruit.display = "show";
+      //       return fruit;
+      //     });
+      //     this.setState({
+      //       fruitLst: initFruit
+      //     });
+      //   }
+      // } else {
+      //   // defualt English
+      //   if (transcript.includes("unicorns")) {
+      //     console.log("Well Done!!! The correct answer is Unicorns!!!");
+      //   }
+      // }
+
+      //   if (transcript.includes("carl is here")) {
+      //     console.log("Well Done!!! You guessed the password!");
+      //   }
+
+      //   console.log(transcript);
+    });
+
+    //this.recognition.addEventListener("end", this.recognition.start);
+    this.recognition.addEventListener("end", () => {
+      if (this.state.voiceOn) this.recognition.start();
+    });
+
+    this.recognition.start();
+  };
+
+  componentDidMount() {
+    console.log("componentDidMount...");
+
+    this.getVoices(); // for FireFox browser we think this is needed?
+    if (this.synth.onvoiceschanged !== undefined) {
+      this.synth.onvoiceschanged = this.getVoices;
+    }
+
+    this.initSpeechRecognition();
+  }
+
+  handleCheck = e => {
+    this.speak();
+  };
+
+  handleSpeak = e => {
+    let voiceOn = this.state.voiceOn;
+    voiceOn = voiceOn ? false : true;
+
+    this.setState({
+      voiceOn
+    });
+
+    if (voiceOn) {
+      console.log("voiceOn Start");
+      //e.target.textContent = "Click Mode";
+      this.recognition.start();
+    } else {
+      console.log("voiceOn Stop");
+      //e.target.textContent = "Speech Mode";
+      this.recognition.abort();
+      this.recognition.stop();
+    }
+  };
+
   handleOnClick = e => {
     let word = e.target.textContent;
+    console.log(e.target.style);
     this.setState({
       wordBankAnswer: [...this.state.wordBankAnswer, word]
     });
-  };
-
-  doSomething = word => {
-    return word;
   };
 
   render() {
@@ -83,30 +268,13 @@ class Phrases extends Component {
       );
     });
 
-    // const wordButtonsAnswer = wordBankAnswer.map((word, index) => {
-    //   return (
-    //     <WordButton
-    //       key={uuid.v4()}
-    //       word={word}
-    //       handleOnClick={this.handleOnClick}
-    //     />
-    //   );
-    // });
-
     return (
       <div className="phrase-page">
         <div className="phrase-holder">
           <h6>Level - {level}</h6>
           <h1>Write this in French:</h1>
           <div className="question">{message}</div>
-          {/* <Sentence key={uuid.v4()} wordButtons={wordButtons} /> */}
-          <Sentence
-            key={uuid.v4()}
-            lines={2}
-            wordBank={wordBankAnswer}
-            handleOnClick={this.handleOnClick}
-            doSomething={this.doSomething}
-          />
+          <Sentence key={uuid.v4()} wordBank={wordBankAnswer} />
         </div>
         <br />
         <br />
@@ -115,11 +283,41 @@ class Phrases extends Component {
         <div className="line" />
 
         <div className="control-holder">
-          <div className="btn btn-action">Check</div>
+          <div className="btn btn-action" onClick={this.handleCheck.bind(this)}>
+            Speak
+            {/* Check */}
+          </div>
+          <div
+            className="btn btn-action"
+            style={
+              this.state.voiceOn ? buttonSpeakStyle : buttonSpeakGreyedStyle
+            }
+            onClick={this.handleSpeak.bind(this)}
+          >
+            Speech Mode
+          </div>
         </div>
       </div>
     );
   }
 }
+
+const buttonSpeakStyle = {
+  color: "black",
+  backgroundColor: "var(--greenYellowDark)",
+  borderBottom: "4px solid var(--greenYellowDark2)",
+  borderRight: "2px solid var(--greenYellowDark2)",
+  borderTop: "1px solid var(--greenYellowDark2)",
+  borderLeft: "1px solid var(--greenYellowDark2)"
+};
+
+const buttonSpeakGreyedStyle = {
+  color: "#777",
+  backgroundColor: "#aaa",
+  borderBottom: "4px solid #999",
+  borderRight: "2px solid #999",
+  borderTop: "1px solid #999",
+  borderLeft: "1px solid #999"
+};
 
 export default Phrases;
