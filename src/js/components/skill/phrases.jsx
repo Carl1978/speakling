@@ -5,10 +5,42 @@ import Sentence from "./Sentence";
 
 // https://medium.com/trabe/measuring-elements-in-react-6bf343b65347
 
+class Word {
+  str = "";
+  state = false;
+
+  constructor(str, id) {
+    console.log("Word constructor...");
+
+    this.str = str;
+    this.id = id;
+    this.state = true;
+  }
+
+  toString() {
+    return `Word :: value : ${this.str}, state : ${this.state}, id : ${
+      this.id
+    }`;
+  }
+}
+
 class Phrases extends Component {
   /* Bonjour, comment vas-tu? */
+  wordLst = [
+    "bonjour",
+    "au-revoir",
+    "vas",
+    "tu",
+    "comment",
+    "oui",
+    "non",
+    "et",
+    "la"
+  ];
+
   state = {
-    voiceOn: true,
+    myWords: [],
+    voiceOn: false,
     phraseIndex: 0,
     phrases: [
       {
@@ -17,17 +49,6 @@ class Phrases extends Component {
         response: "Bonjour comment vas tu",
         wordBank: [
           "bonjour",
-          // "bonjour",
-          // "bonjour",
-          // "bonjour",
-          // "bonjour",
-          // "bonjour",
-          // "bonjour",
-          // "bonjour",
-          // "bonjour",
-          // "bonjour",
-          // "bonjour",
-          // "bonjour",
           "au-revoir",
           "vas",
           "tu",
@@ -128,7 +149,7 @@ class Phrases extends Component {
 
     this.recognition = new window.SpeechRecognition();
     this.recognition.interimResults = true;
-    this.recognition.lang = "fr-Fr"; //"en-US"; //"hu-HU"; //"en-US";
+    this.recognition.lang = "en-US"; //"fr-Fr"; //"en-US"; //"hu-HU"; //"en-US";
     let { lang } = this.recognition;
     console.log("initSpeechRecognition : lang : " + lang);
     //recognition.start();
@@ -207,7 +228,7 @@ class Phrases extends Component {
       if (this.state.voiceOn) this.recognition.start();
     });
 
-    this.recognition.start();
+    if (this.state.voiceOn) this.recognition.start();
   };
 
   componentDidMount() {
@@ -219,6 +240,24 @@ class Phrases extends Component {
     }
 
     this.initSpeechRecognition();
+
+    // let arr = new Array()
+    // this.setState({
+    //   wordButtonStateLst
+    // });
+
+    let myWords = [];
+    this.wordLst.forEach((str, index) => {
+      let word = new Word(str, index);
+      myWords.push(word);
+    });
+
+    this.setState({
+      myWords: myWords
+    });
+
+    console.log(this.state.myWords);
+    console.log(myWords[0].toString());
   }
 
   handleCheck = e => {
@@ -245,25 +284,45 @@ class Phrases extends Component {
     }
   };
 
-  handleOnClick = e => {
+  handleOnClick = (id, e) => {
+    console.log("handleOnClick.......! : id : " + id);
+    console.log("e.target.textContent : " + e.target.textContent);
+
     let word = e.target.textContent;
     console.log(e.target.style);
+
+    let myWords = this.state.myWords.map(word => {
+      if (word.id === id) {
+        word.state = false;
+      }
+      return word;
+    });
+
+    console.log("TEST: word : ", word);
+    word = new Word(word, id);
+
     this.setState({
-      wordBankAnswer: [...this.state.wordBankAnswer, word]
+      wordBankAnswer: [...this.state.wordBankAnswer, word],
+      myWords: myWords
     });
   };
 
   render() {
+    console.log(this.state.myWords);
     const { phraseIndex, wordBankAnswer } = this.state;
     const { message, response, wordBank } = this.state.phrases[phraseIndex];
     const { level } = this.props.match.params;
+    const { wordButtonStateLst } = this.state;
+    const { myWords } = this.state;
 
     const wordButtons = wordBank.map((word, index) => {
+      console.log("myWords : " + myWords);
       return (
         <WordButton
           key={uuid.v4()}
           word={word}
-          handleOnClick={this.handleOnClick.bind(this)}
+          myWord={myWords[index]}
+          handleOnClick={this.handleOnClick}
         />
       );
     });
@@ -277,8 +336,7 @@ class Phrases extends Component {
           <Sentence key={uuid.v4()} wordBank={wordBankAnswer} />
         </div>
         <br />
-        <br />
-        <div className="phrase-holder">{wordButtons}</div>
+        <div className="phrase-holder phrase-holder-auto">{wordButtons}</div>
         <br />
         <div className="line" />
 

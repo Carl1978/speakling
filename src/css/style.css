@@ -1,40 +1,76 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 
+:root {
+  --my-number: 5em;
+}
+
 * {
-    margin: 0;
+  margin: 0;
 }
 
 div.container {
-    width: 300px;
-    height: 300px;
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    box-sizing: border-box;
+  width: 150px;
+
+  /* max-height: 200px; */
+  /* max-width: 500px; */
+  /* height: 300px; */
+  /* width: 70%; */
+  /* width: calc(100vw - 2em); */
+  /* width: calc(100vw - var(--my-number));
+  height: calc(100vh - var(--my-number)); */
+  /* height: 100%; */
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  /* overflow: hidden; */
+  /* font-size: calc(5vw + 1rem); */
+}
+
+.container2 {
+  width: 400px;
+  height: 400px;
+  background-color: red;
+}
+
+.myImage {
+  width: 100vw;
+  height: 300px;
+  object-fit: contain;
+  background-color: green;
+  /* min-width: 64px;
+  min-height: 64px;
+  width: 20vw;
+  height: 20vw; */
+  /* width: 400px; */
+  /* width: 200px; */
+  /* max-width: 100vw;
+  margin: 0 calc(-50vw + 50%); */
+  /* object-fit: scale-down; */
 }
 
 .myButton {
-    width: 100px;
-    border: 1px solid;
+  width: 100px;
+  border: 1px solid;
 
-    display: inline-block;
-    padding: 10px;
-    margin: 4px;
-    border-radius: 5px;
-    text-transform: capitalize;
-    font-family: Roboto, sans-serif;
-    background-color: royalblue;
-    text-align: center;
+  display: inline-block;
+  padding: 10px;
+  margin: 4px;
+  border-radius: 5px;
+  text-transform: capitalize;
+  font-family: Roboto, sans-serif;
+  background-color: royalblue;
+  text-align: center;
 }
 
 .myButton:hover {
-    background-color: rgb(123, 150, 231);
+  background-color: rgb(123, 150, 231);
 }

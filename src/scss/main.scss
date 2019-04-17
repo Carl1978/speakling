@@ -113,11 +113,16 @@ h1 {
 .phrase-holder {
   width: 90vw;
   margin: 10px auto;
-  height: auto;
+  // height: auto;
+  height: 300px;
   padding: 5px;
 
   border-radius: 5px;
   background-color: rgb(230, 230, 230);
+}
+
+.phrase-holder-auto {
+  height: auto;
 }
 
 .control-holder {

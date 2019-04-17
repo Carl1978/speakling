@@ -24,10 +24,24 @@ class Sentence extends Component {
     // });
   };
 
+  handleOnClick = (id, e) => {
+    console.log("handleOnClick.......! : id : " + id);
+    console.log("e.target.textContent : " + e.target.textContent);
+
+    console.log("handleOnClick :: Sentence : word : ", this.props.word);
+  };
+
   render() {
     const { wordBank } = this.props;
     const wordButtons = wordBank.map((word, index) => {
-      return <WordButton key={uuid.v4()} word={word} />;
+      console.log("Sentence : word : ", word.toString());
+      return (
+        <WordButton
+          key={uuid.v4()}
+          word={word.str}
+          handleOnClick={this.handleOnClick}
+        />
+      );
     });
 
     return <div className="sentence">{wordButtons}</div>;
